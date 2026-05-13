@@ -7,8 +7,7 @@ import { useState, useRef, useEffect } from "react";
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Loader from "./Loader";
-import { useBikeStore } from "../store/bikeStore";
+import { useBikeStore } from "../store/bikeStore.ts";
 
 gsap.registerPlugin(SplitText, ScrollTrigger);
 
@@ -437,9 +436,6 @@ export default function BikeConfigurator() {
       ? "wheel-right-out absolute"
       : "wheel-right absolute";
 
-  if (loading) {
-    return <Loader progress={progress} />;
-  }
 
   const handleNavigateFrames = async () => {
     await gsap.to("main", {
@@ -450,7 +446,7 @@ export default function BikeConfigurator() {
       ease: "power3.inOut",
     });
 
-    router.push("/frames");
+    router.push("/framesConfiguration");
   };
 
   return (
