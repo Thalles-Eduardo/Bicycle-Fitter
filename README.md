@@ -8,9 +8,7 @@ An immersive high-performance bike configurator built with modern web technologi
 
 > A fully animated bike customization experience with dynamic transitions, persistent state management, and smooth page interactions.
 
-```html
-<video src="./Bicycle Fitter.mp4" controls width="100%"></video>
-```
+https://github.com/user-attachments/assets/28ee4fe4-1d0d-4bf3-a823-f5330c98e051
 
 ---
 
