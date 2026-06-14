@@ -1,17 +1,30 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useBikeStore } from "../store/bikeStore.ts";
+import { useBikeStore } from "../store/bikeStore";
+import Loader from "../components/Loader";
 
 gsap.registerPlugin(SplitText, ScrollTrigger);
 
 type WheelState = "idle" | "entering" | "visible" | "exiting";
+
+// Todos os recursos pré-carregados antes de revelar a interface.
+const ASSETS = [
+  "/frame-1.png",
+  "/frame-2.png",
+  "/frame-3.png",
+  "/frame-4.png",
+  "/wheel-1.png",
+  "/wheel-2.png",
+  "/wheel-3.png",
+  "/wheel-4.png",
+  "/icon-bike.png",
+];
 
 const DEFAULT_DESCRIPTION =
   "A high-performance bike with a lightweight, durable frame built for speed and precision. Equipped with high-performance tires that ensure excellent grip, smooth control, and efficiency at high speeds.";
@@ -73,15 +86,6 @@ export default function BikeConfigurator() {
   // Store
   const storedWheelId = useBikeStore((s) => s.selectedWheel);
   const setSelectedWheelStore = useBikeStore((s) => s.setSelectedWheel);
-
-  const assets = [
-    "/frame-1.png",
-    "/wheel-1.png",
-    "/wheel-2.png",
-    "/wheel-3.png",
-    "/wheel-4.png",
-    "/icon-bike.png",
-  ];
 
   const constructionModeRef = useRef<HTMLHeadingElement>(null);
   const bigTextRef = useRef<HTMLHeadingElement>(null);
@@ -157,7 +161,7 @@ export default function BikeConfigurator() {
     let loaded = 0;
 
     const preloadImages = async () => {
-      const promises = assets.map((src) => {
+      const promises = ASSETS.map((src) => {
         return new Promise<void>((resolve) => {
           const img = new window.Image();
 
@@ -166,7 +170,7 @@ export default function BikeConfigurator() {
           img.onload = () => {
             loaded++;
 
-            setProgress(Math.round((loaded / assets.length) * 100));
+            setProgress(Math.round((loaded / ASSETS.length) * 100));
 
             resolve();
           };
@@ -174,7 +178,7 @@ export default function BikeConfigurator() {
           img.onerror = () => {
             loaded++;
 
-            setProgress(Math.round((loaded / assets.length) * 100));
+            setProgress(Math.round((loaded / ASSETS.length) * 100));
 
             resolve();
           };
@@ -450,16 +454,18 @@ export default function BikeConfigurator() {
   };
 
   return (
-    <main
-      className="w-full min-h-screen flex overflow-hidden"
-      style={{
-        opacity: 0,
-        transform: "translateY(20px)",
-        filter: "blur(10px)",
-      }}
-    >
-      {" "}
-      {/* LEFT SIDE */}
+    <>
+      {loading && <Loader progress={progress} />}
+      <main
+        className="w-full min-h-screen flex overflow-hidden"
+        style={{
+          opacity: 0,
+          transform: "translateY(20px)",
+          filter: "blur(10px)",
+        }}
+      >
+        {" "}
+        {/* LEFT SIDE */}
       <section
         ref={leftSideRef}
         className="z-1 relative w-180 bg-red flex flex-col justify-between px-20 py-15"
@@ -534,7 +540,8 @@ export default function BikeConfigurator() {
               </div>
             )}
             <Image
-              loading="eager"
+              priority
+              sizes="(max-width: 768px) 90vw, 45vw"
               src="/frame-1.png"
               width={1536}
               height={1024}
@@ -596,6 +603,7 @@ export default function BikeConfigurator() {
                     <Image
                       width={1200}
                       height={800}
+                      sizes="88px"
                       src={wheel.image}
                       alt={wheel.title}
                       className="w-22 object-contain transition-transform duration-300 group-hover:scale-105"
@@ -630,7 +638,8 @@ export default function BikeConfigurator() {
             </button>
           </div>
         </div>
-      </section>
-    </main>
+        </section>
+      </main>
+    </>
   );
 }

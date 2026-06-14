@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import gsap from "gsap";
@@ -457,7 +456,8 @@ export default function FrameConfigurator() {
               style={{ opacity: selectedFrame !== null ? 0 : 1 }}
             >
               <Image
-                loading="eager"
+                priority
+                sizes="(max-width: 768px) 90vw, 45vw"
                 src="/frame-1.png"
                 width={1536}
                 height={1024}
@@ -551,6 +551,7 @@ export default function FrameConfigurator() {
                     <Image
                       width={400}
                       height={300}
+                      sizes="88px"
                       src={frame.image}
                       alt={frame.title}
                       className="w-22 object-contain transition-transform duration-300 group-hover:scale-105"
