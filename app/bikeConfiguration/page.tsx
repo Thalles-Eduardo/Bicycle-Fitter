@@ -504,8 +504,8 @@ export default function BikeConfigurator() {
                 className={leftClass}
                 onAnimationEnd={handleAnimationEnd}
                 style={{
-                  bottom: "3%",
-                  left: "1%",
+                  bottom: "22%",
+                  left: "5.5%",
                   width: "27%",
                   pointerEvents: "none",
                 }}
@@ -524,8 +524,8 @@ export default function BikeConfigurator() {
                 key={`right-${animKey}`}
                 className={rightClass}
                 style={{
-                  bottom: "-1%",
-                  right: "4%",
+                  bottom: "17%",
+                  right: "17.5%",
                   width: "27%",
                   pointerEvents: "none",
                 }}
