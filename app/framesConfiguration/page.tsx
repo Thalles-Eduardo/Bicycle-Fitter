@@ -509,7 +509,7 @@ export default function FrameConfigurator() {
               <>
                 <div
                   className="absolute pointer-events-none z-1"
-                  style={{ bottom: "22%", left: "5.5%", width: "27%" }}
+                  style={{ bottom: "9.75%", left: "-3.5%", width: "27%" }}
                 >
                   <Image
                     src={activeWheelImage}
@@ -521,7 +521,7 @@ export default function FrameConfigurator() {
                 </div>
                 <div
                   className="absolute pointer-events-none z-1"
-                  style={{ bottom: "17%", right: "17.5%", width: "27%" }}
+                  style={{ bottom: "9.75%", right: "8.5%", width: "27%" }}
                 >
                   <Image
                     src={activeWheelImage}
