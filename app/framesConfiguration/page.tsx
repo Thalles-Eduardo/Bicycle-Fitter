@@ -18,7 +18,7 @@ const DEFAULT_DESCRIPTION =
 const frames = [
   {
     id: 1,
-    image: "/frame-1.png",
+    image: "/frame-1.webp",
     title: "FRAME TYPE 1",
     label: "AERO",
     description:
@@ -26,7 +26,7 @@ const frames = [
   },
   {
     id: 2,
-    image: "/frame-2.png",
+    image: "/frame-2.webp",
     title: "FRAME TYPE 2",
     label: "ENDURANCE",
     description:
@@ -34,27 +34,18 @@ const frames = [
   },
   {
     id: 3,
-    image: "/frame-3.png",
+    image: "/frame-3.webp",
     title: "FRAME TYPE 3",
     label: "CLIMBER",
     description:
       "Every gram counts on the ascent. An ultra-light monocoque shell and stiff bottom bracket deliver pure power transfer, so your watts go straight to the pedals — not the frame.",
   },
-  {
-    id: 4,
-    image: "/frame-4.png",
-    title: "FRAME TYPE 4",
-    label: "TRACK",
-    description:
-      "Built for the velodrome, refined for the street. Fixed geometry and a rigid rear triangle create instant responsiveness, turning every pedal stroke into direct, explosive acceleration.",
-  },
 ];
 
 const wheelImages: Record<number, string> = {
-  1: "/wheel-1.png",
-  2: "/wheel-2.png",
-  3: "/wheel-3.png",
-  4: "/wheel-4.png",
+  1: "/wheel-1.webp",
+  2: "/wheel-2.webp",
+  3: "/wheel-3.webp",
 };
 
 export default function FrameConfigurator() {
@@ -448,7 +439,7 @@ export default function FrameConfigurator() {
           >
             <div className="w-1.5 h-10 bg-beige" />
             <Image
-              src="/icon-bike.png"
+              src="/icon-bike.webp"
               alt="Bike Icon"
               width={32}
               height={32}
@@ -496,7 +487,7 @@ export default function FrameConfigurator() {
               <Image
                 priority
                 sizes="(max-width: 768px) 90vw, 45vw"
-                src="/frame-1.png"
+                src="/frame-1.webp"
                 width={1536}
                 height={1024}
                 alt="Frame"
@@ -509,7 +500,7 @@ export default function FrameConfigurator() {
               <>
                 <div
                   className="absolute pointer-events-none z-1"
-                  style={{ bottom: "9.75%", left: "-3.5%", width: "27%" }}
+                  style={{ bottom: "3%", left: "1%", width: "27%" }}
                 >
                   <Image
                     src={activeWheelImage}
@@ -521,7 +512,7 @@ export default function FrameConfigurator() {
                 </div>
                 <div
                   className="absolute pointer-events-none z-1"
-                  style={{ bottom: "9.75%", right: "8.5%", width: "27%" }}
+                  style={{ bottom: "-1.5%", right: "4%", width: "27%" }}
                 >
                   <Image
                     src={activeWheelImage}

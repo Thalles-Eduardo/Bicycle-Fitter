@@ -15,15 +15,13 @@ type WheelState = "idle" | "entering" | "visible" | "exiting";
 
 // Todos os recursos pré-carregados antes de revelar a interface.
 const ASSETS = [
-  "/frame-1.png",
-  "/frame-2.png",
-  "/frame-3.png",
-  "/frame-4.png",
-  "/wheel-1.png",
-  "/wheel-2.png",
-  "/wheel-3.png",
-  "/wheel-4.png",
-  "/icon-bike.png",
+  "/frame-1.webp",
+  "/frame-2.webp",
+  "/frame-3.webp",
+  "/wheel-1.webp",
+  "/wheel-2.webp",
+  "/wheel-3.webp",
+  "/icon-bike.webp",
 ];
 
 const DEFAULT_DESCRIPTION =
@@ -32,31 +30,24 @@ const DEFAULT_DESCRIPTION =
 const wheels = [
   {
     id: 1,
-    image: "/wheel-1.png",
+    image: "/wheel-1.webp",
     title: "WHEEL TYPE 1",
     description:
       "Engineered for raw speed on open roads. Ultra-thin profile with a reinforced carbon rim delivers minimal rolling resistance and maximum aerodynamic efficiency at every push.",
   },
   {
     id: 2,
-    image: "/wheel-2.png",
+    image: "/wheel-2.webp",
     title: "WHEEL TYPE 2",
     description:
       "Built to conquer rough terrain without compromise. Deep-tread rubber and a shock-absorbing alloy core keep you planted and in control across gravel, dirt, and uneven surfaces.",
   },
   {
     id: 3,
-    image: "/wheel-3.png",
+    image: "/wheel-3.webp",
     title: "WHEEL TYPE 3",
     description:
       "The all-rounder for riders who refuse to choose. Balanced tread pattern and mid-weight construction adapt seamlessly from city streets to weekend trails — performance without limits.",
-  },
-  {
-    id: 4,
-    image: "/wheel-4.png",
-    title: "WHEEL TYPE 4",
-    description:
-      "Precision-machined for competitive track use. Laser-trued spokes and a featherlight tubeless rim create a wheel that responds instantly, shaving crucial milliseconds off every lap.",
   },
 ];
 
@@ -518,7 +509,7 @@ export default function BikeConfigurator() {
           <div ref={iconLineRef} className="mt-16 w-18 bg-light-red flex items-center gap-4">
             <div className="w-1.5 h-10 bg-beige" />
             <Image
-              src="/icon-bike.png"
+              src="/icon-bike.webp"
               alt="Bike Icon"
               width={32}
               height={32}
@@ -542,8 +533,8 @@ export default function BikeConfigurator() {
                 className={leftClass}
                 onAnimationEnd={handleAnimationEnd}
                 style={{
-                  bottom: "9.75%",
-                  left: "-3.5%",
+                  bottom: "3%",
+                  left: "1%",
                   width: "27%",
                   pointerEvents: "none",
                 }}
@@ -551,7 +542,7 @@ export default function BikeConfigurator() {
                 <Image
                   src={activeWheel.image}
                   alt="Rear wheel"
-                  width={220}
+                  width={320}
                   height={220}
                   className="w-full object-contain"
                 />
@@ -562,8 +553,8 @@ export default function BikeConfigurator() {
                 key={`right-${animKey}`}
                 className={rightClass}
                 style={{
-                  bottom: "9.75%",
-                  right: "8.5%",
+                  bottom: "-1.5%",
+                  right: "4%",
                   width: "27%",
                   pointerEvents: "none",
                 }}
@@ -580,7 +571,7 @@ export default function BikeConfigurator() {
             <Image
               priority
               sizes="(max-width: 768px) 90vw, 45vw"
-              src="/frame-1.png"
+              src="/frame-1.webp"
               width={1536}
               height={1024}
               alt="Frame"

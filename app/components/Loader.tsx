@@ -26,7 +26,7 @@ export default function Loader({ progress }: LoaderProps) {
     >
       <div className="loader-pulse flex flex-col items-center">
         <Image
-          src="/icon-bike.png"
+          src="/icon-bike.webp"
           alt=""
           width={56}
           height={56}
