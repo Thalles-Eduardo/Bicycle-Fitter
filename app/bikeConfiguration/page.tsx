@@ -210,7 +210,12 @@ export default function BikeConfigurator() {
   useEffect(() => {
     if (loading) return;
 
-    const ctx = gsap.context(() => {
+    const mm = gsap.matchMedia();
+
+    // ───── Desktop (≥768px): timeline cinematográfica completa ─────
+    mm.add(
+      "(min-width: 768px) and (prefers-reduced-motion: no-preference)",
+      () => {
       const master = gsap.timeline({ defaults: { ease: "power3.out" } });
 
       master.to("main", {
@@ -399,7 +404,40 @@ export default function BikeConfigurator() {
       }
     });
 
-    return () => ctx.revert();
+    // ───── Mobile (<768px): revelação leve, sem slides horizontais ─────
+    mm.add(
+      "(max-width: 767px) and (prefers-reduced-motion: no-preference)",
+      () => {
+        const master = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+        master.to("main", {
+          opacity: 1,
+          y: 0,
+          filter: "blur(0px)",
+          duration: 0.6,
+          ease: "expo.out",
+        });
+
+        master.fromTo(
+          [leftSideRef.current, rightSideRef.current],
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 0.6, stagger: 0.12 },
+          "-=0.3",
+        );
+      },
+    );
+
+    // ───── Reduced motion: revela sem animação ─────
+    mm.add("(prefers-reduced-motion: reduce)", () => {
+      gsap.set("main", { opacity: 1, y: 0, filter: "blur(0px)" });
+      gsap.set([leftSideRef.current, rightSideRef.current], {
+        opacity: 1,
+        xPercent: 0,
+        y: 0,
+      });
+    });
+
+    return () => mm.revert();
   }, [loading]);
 
   const handleWheelClick = (id: number) => {
@@ -457,7 +495,7 @@ export default function BikeConfigurator() {
     <>
       {loading && <Loader progress={progress} />}
       <main
-        className="w-full min-h-screen flex overflow-hidden"
+        className="w-full min-h-screen flex flex-col md:flex-row md:overflow-hidden"
         style={{
           opacity: 0,
           transform: "translateY(20px)",
@@ -468,12 +506,12 @@ export default function BikeConfigurator() {
         {/* LEFT SIDE */}
       <section
         ref={leftSideRef}
-        className="z-1 relative w-180 bg-red flex flex-col justify-between px-20 py-15"
+        className="z-1 relative w-full md:w-180 bg-red flex flex-col justify-between px-6 py-10 md:px-20 md:py-15"
       >
         <div className="z-10">
           <h2
             ref={constructionModeRef}
-            className="text-black text-[40px] font-bold"
+            className="text-black text-[26px] md:text-[40px] font-bold"
           >
             Construction Mode
           </h2>
@@ -490,13 +528,13 @@ export default function BikeConfigurator() {
 
         <h1
           ref={bigTextRef}
-          className="flex absolute top-70 text-[180px] font-extrabold text-[#f4f1ea] leading-none z-0"
+          className="flex relative justify-center md:justify-start md:absolute md:top-70 text-[64px] md:text-[180px] font-extrabold text-[#f4f1ea] leading-none z-0"
           style={{ willChange: "clip-path" }}
         >
           WHE <span className="stroke-text">ELS</span>
         </h1>
 
-        <div className="absolute w-250 h-auto bottom-45 left-25">
+        <div className="relative w-full mx-auto md:absolute md:w-250 h-auto md:bottom-45 md:left-25">
           <div className="relative">
             {activeWheel && (
               <div
@@ -558,19 +596,19 @@ export default function BikeConfigurator() {
       {/* RIGHT SIDE */}
       <section
         ref={rightSideRef}
-        className="w-1/1 bg-white flex flex-col justify-center px-25 py-15"
+        className="w-full md:w-1/1 bg-white flex flex-col justify-center px-6 py-10 md:px-25 md:py-15"
       >
-        <div className="max-w-162.5 ml-auto">
+        <div className="w-full max-w-162.5 md:ml-auto">
           <h2
             ref={configureTitleRef}
-            className="text-[64px] font-bold leading-tight text-dark-blue overflow-hidden"
+            className="text-[32px] md:text-[64px] font-bold leading-tight text-dark-blue overflow-hidden"
           >
             Configure the Bike
           </h2>
 
           <p
             ref={descriptionRef}
-            className="mt-10 text-center text-[24px] leading-[1.4] text-dark-blue opacity-50 max-w-137.5"
+            className="mt-10 text-center text-[16px] md:text-[24px] leading-[1.4] text-dark-blue opacity-50 max-w-137.5"
           >
             {DEFAULT_DESCRIPTION}
           </p>
@@ -578,11 +616,11 @@ export default function BikeConfigurator() {
           <div className="mt-24">
             <h3
               ref={wheelsTitleRef}
-              className="text-[48px] font-bold text-dark-blue"
+              className="text-[28px] md:text-[48px] font-bold text-dark-blue"
             >
               Wheels
             </h3>
-            <div ref={wheelsGridRef} className="flex items-center gap-16 mt-10">
+            <div ref={wheelsGridRef} className="flex flex-wrap justify-center md:justify-start items-center gap-6 md:gap-16 mt-10">
               {wheels.map((wheel) => (
                 <button
                   key={wheel.id}

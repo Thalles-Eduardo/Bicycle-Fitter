@@ -129,7 +129,12 @@ export default function FrameConfigurator() {
   };
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
+    const mm = gsap.matchMedia();
+
+    // ───── Desktop (≥768px): timeline cinematográfica completa ─────
+    mm.add(
+      "(min-width: 768px) and (prefers-reduced-motion: no-preference)",
+      () => {
       const master = gsap.timeline({ defaults: { ease: "power3.out" } });
 
       master.to("main", {
@@ -325,7 +330,40 @@ export default function FrameConfigurator() {
       }
     });
 
-    return () => ctx.revert();
+    // ───── Mobile (<768px): revelação leve, sem slides horizontais ─────
+    mm.add(
+      "(max-width: 767px) and (prefers-reduced-motion: no-preference)",
+      () => {
+        const master = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+        master.to("main", {
+          opacity: 1,
+          y: 0,
+          filter: "blur(0px)",
+          duration: 0.6,
+          ease: "expo.out",
+        });
+
+        master.fromTo(
+          [leftSideRef.current, rightSideRef.current],
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 0.6, stagger: 0.12 },
+          "-=0.3",
+        );
+      },
+    );
+
+    // ───── Reduced motion: revela sem animação ─────
+    mm.add("(prefers-reduced-motion: reduce)", () => {
+      gsap.set("main", { opacity: 1, y: 0, filter: "blur(0px)" });
+      gsap.set([leftSideRef.current, rightSideRef.current], {
+        opacity: 1,
+        xPercent: 0,
+        y: 0,
+      });
+    });
+
+    return () => mm.revert();
   }, []);
 
   const handleFrameClick = (id: number) => {
@@ -384,7 +422,7 @@ export default function FrameConfigurator() {
 
   return (
     <main
-      className="w-full min-h-screen flex overflow-hidden"
+      className="w-full min-h-screen flex flex-col md:flex-row md:overflow-hidden"
       style={{
         opacity: 0,
         transform: "translateY(20px)",
@@ -395,12 +433,12 @@ export default function FrameConfigurator() {
       {/* ───── LEFT SIDE ───── */}
       <section
         ref={leftSideRef}
-        className="z-1 relative w-180 bg-dark-green flex flex-col justify-between px-20 py-15"
+        className="z-1 relative w-full md:w-180 bg-dark-green flex flex-col justify-between px-6 py-10 md:px-20 md:py-15"
       >
         <div className="z-10">
           <h2
             ref={constructionModeRef}
-            className="text-dark-blue text-[40px] font-bold"
+            className="text-dark-blue text-[26px] md:text-[40px] font-bold"
           >
             Construction Mode
           </h2>
@@ -420,7 +458,7 @@ export default function FrameConfigurator() {
 
         <h1
           ref={bigTextRef}
-          className="flex absolute top-70 text-[180px] font-extrabold text-white leading-none z-0"
+          className="flex relative justify-center md:justify-start md:absolute md:top-70 text-[64px] md:text-[180px] font-extrabold text-white leading-none z-0"
           style={{ willChange: "clip-path" }}
         >
           FRA <span className="stroke-text">MES</span>
@@ -429,7 +467,7 @@ export default function FrameConfigurator() {
         {/* BIKE + FRAME OVERLAY */}
         <div
           ref={bikeContainerRef}
-          className="absolute w-250 h-auto bottom-45 left-25"
+          className="relative w-full mx-auto md:absolute md:w-250 h-auto md:bottom-45 md:left-25"
         >
           <div className="relative">
             {/* Frame selecionado */}
@@ -505,19 +543,19 @@ export default function FrameConfigurator() {
       {/* ───── RIGHT SIDE ───── */}
       <section
         ref={rightSideRef}
-        className="w-1/1 bg-white flex flex-col justify-center px-25 py-15"
+        className="w-full md:w-1/1 bg-white flex flex-col justify-center px-6 py-10 md:px-25 md:py-15"
       >
-        <div className="max-w-162.5 ml-auto">
+        <div className="w-full max-w-162.5 md:ml-auto">
           <h2
             ref={configureTitleRef}
-            className="text-[64px] font-bold leading-tight text-dark-blue overflow-hidden"
+            className="text-[32px] md:text-[64px] font-bold leading-tight text-dark-blue overflow-hidden"
           >
             Configure the Frame
           </h2>
 
           <p
             ref={descriptionRef}
-            className="mt-10 text-center text-[24px] leading-[1.4] text-dark-blue opacity-50 max-w-137.5"
+            className="mt-10 text-center text-[16px] md:text-[24px] leading-[1.4] text-dark-blue opacity-50 max-w-137.5"
           >
             {DEFAULT_DESCRIPTION}
           </p>
@@ -525,12 +563,12 @@ export default function FrameConfigurator() {
           <div className="mt-24">
             <h3
               ref={framesTitleRef}
-              className="text-[48px] font-bold text-dark-blue"
+              className="text-[28px] md:text-[48px] font-bold text-dark-blue"
             >
               Frames
             </h3>
 
-            <div ref={framesGridRef} className="flex items-end gap-12 mt-10">
+            <div ref={framesGridRef} className="flex flex-wrap justify-center md:justify-start items-end gap-6 md:gap-12 mt-10">
               {frames.map((frame) => (
                 <button
                   key={frame.id}
